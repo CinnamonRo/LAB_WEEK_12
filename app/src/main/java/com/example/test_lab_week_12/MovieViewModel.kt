@@ -32,8 +32,13 @@ class MovieViewModel(private val movieRepository: MovieRepository) : ViewModel()
                     _error.value = e.message ?: "Unknown Error"
                 }
                 .collect { movies ->
-                    // Ambil data dari flow dan update state
-                    _popularMovies.value = movies
+                    // Ambil data dari flow, filter, sort, dan update state
+                    val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR).toString()
+                    val filteredSortedMovies = movies
+                        .filter { it.releaseDate?.startsWith(currentYear) == true }
+                        .sortedByDescending { it.popularity }
+                    
+                    _popularMovies.value = filteredSortedMovies
                 }
         }
     }

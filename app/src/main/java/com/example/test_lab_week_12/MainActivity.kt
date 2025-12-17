@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.test_lab_week_12.model.Movie
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import java.util.Calendar
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +54,7 @@ class MainActivity : AppCompatActivity() {
                 // Launch coroutine terpisah untuk mengumpulkan movies
                 launch {
                     movieViewModel.popularMovies.collect { popularMovies ->
-                        val currentYear = Calendar.getInstance().get(Calendar.YEAR).toString()
-                        movieAdapter.addMovies(
-                            popularMovies
-                                .filter { it.releaseDate?.startsWith(currentYear) == true }
-                                .sortedByDescending { it.popularity }
-                        )
+                        movieAdapter.addMovies(popularMovies)
                     }
                 }
 
